@@ -60,5 +60,33 @@ RSpec.describe StringCalculator do
         expect(subject).to eq(6)
       end
     end
+
+     context 'when numbers contain negative numbers' do
+      let(:numbers) { '1,-2,3' }
+      it 'raises an error' do
+        expect { subject }.to raise_error('Negative numbers not allowed: -2')
+      end
+    end
+
+    context 'when numbers contain multiple negative numbers' do
+      let(:numbers) { '1,-2,-3' }
+      it 'raises an error' do
+        expect { subject }.to raise_error('Negative numbers not allowed: -2, -3')
+      end
+    end
+
+    context 'when numbers contain a mix of positive and negative numbers' do
+      let(:numbers) { '1,-2,3,-4' }
+      it 'raises an error' do
+        expect { subject }.to raise_error('Negative numbers not allowed: -2, -4')
+      end
+    end
+
+    context 'when numbers contain a mix of positive and negative numbers with custom delimiter' do
+      let(:numbers) { '//:\n1:-2:3:-4' }
+      it 'raises an error' do
+        expect { subject }.to raise_error('Negative numbers not allowed: -2, -4')
+      end
+    end
   end
 end
