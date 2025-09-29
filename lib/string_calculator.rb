@@ -7,12 +7,13 @@ class StringCalculator
     begin
       return 0 if numbers.nil? || numbers&.empty?
 
-      delimiter = DEFAULT_DELIMITER
-      if numbers&.start_with?("//")
-        delimiter = numbers[2] || DEFAULT_DELIMITER
-        numbers = numbers[4..]
+      delimiters = DEFAULT_DELIMITER
+      if numbers&.start_with?('//')
+        extracted_numbers = extract_numbers(numbers)&.map(&:to_i)
+      else
+        extracted_numbers = numbers&.split(delimiters).map(&:to_i)
       end
-      extracted_numbers = numbers&.split(delimiter).map(&:to_i)
+
       return 0 if extracted_numbers.nil?
 
       raise "Negative numbers not allowed: #{negative_numbers(extracted_numbers).join(', ')}" if negative_numbers(extracted_numbers).any?
@@ -24,6 +25,23 @@ class StringCalculator
   end
 
   private
+
+  def extract_numbers(numbers)
+    numbers = numbers[2..]
+    delimiters_part, numbers_part = numbers.split("\n")
+    if delimiters_part.start_with?('[')
+      delimiters = delimiters_part[1..-2].split('][')
+    else
+      delimiters = [delimiters_part]
+    end
+    split_by_delimiters(numbers_part, delimiters)
+  end
+
+  def split_by_delimiters(str, delimiters)
+    escaped = delimiters.map { |d| Regexp.escape(d) }
+    pattern = Regexp.new(escaped.join('|'))
+    str.split(pattern)
+  end
 
   def negative_numbers(numbers)
     numbers.select(&:negative?)
