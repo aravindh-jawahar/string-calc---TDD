@@ -32,5 +32,12 @@ RSpec.describe StringCalculator do
         expect(subject).to eq(3)
       end
     end
+
+    context 'when numbers are large amount' do
+      let(:numbers) { "1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10" }
+      it 'returns the sum of the numbers' do
+        expect(subject).to eq(165)
+      end
+    end
   end
 end
