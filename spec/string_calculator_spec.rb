@@ -39,5 +39,19 @@ RSpec.describe StringCalculator do
         expect(subject).to eq(165)
       end
     end
+
+    context 'when numbers are a newline-separated string' do
+      let(:numbers) { "1\n2\n3" }
+      it 'returns the sum of the numbers' do
+        expect(subject).to eq(6)
+      end
+    end
+
+    context 'when numbers are a mix of comma and newline' do
+      let(:numbers) { "1\n2,3" }
+      it 'returns the sum of the numbers' do
+        expect(subject).to eq(6)
+      end
+    end
   end
 end
