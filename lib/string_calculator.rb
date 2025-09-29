@@ -17,7 +17,7 @@ class StringCalculator
 
       raise "Negative numbers not allowed: #{negative_numbers(extracted_numbers).join(', ')}" if negative_numbers(extracted_numbers).any?
 
-      extracted_numbers.sum
+      extracted_numbers.reject { |n| n > 1000 }.sum
     rescue StandardError => e
       raise e.message
     end
@@ -26,6 +26,6 @@ class StringCalculator
   private
 
   def negative_numbers(numbers)
-    numbers.select { |number| number.to_i < 0 }
+    numbers.select(&:negative?)
   end
 end

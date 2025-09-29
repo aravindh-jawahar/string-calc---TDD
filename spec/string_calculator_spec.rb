@@ -88,5 +88,26 @@ RSpec.describe StringCalculator do
         expect { subject }.to raise_error('Negative numbers not allowed: -2, -4')
       end
     end
+
+    context 'when number has a value greater than 1000' do
+      let(:numbers) { '1001,2' }
+      it 'ignores the number greater than 1000' do
+        expect(subject).to eq(2)
+      end
+    end
+
+    context 'when number has a value greater than 1000 with custom delimiter' do
+      let(:numbers) { '//:\n1001:2:3' }
+      it 'ignores the number greater than 1000' do
+        expect(subject).to eq(5)
+      end
+    end
+
+    context 'when number has a value greater than 1000 with custom delimiter and negative numbers' do
+      let(:numbers) { '//:\n1001:-2:3:-4' }
+      it 'raises an error' do
+        expect { subject }.to raise_error('Negative numbers not allowed: -2, -4')
+      end
+    end
   end
 end
